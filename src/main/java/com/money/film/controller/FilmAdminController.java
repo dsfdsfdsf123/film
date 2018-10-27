@@ -2,6 +2,7 @@ package com.money.film.controller;
 
 import com.money.film.Service.FilmService;
 import com.money.film.entity.Film;
+import com.money.film.entity.WebSite;
 import com.money.film.util.DateUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -15,6 +16,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,6 +32,23 @@ public class FilmAdminController {
 
     @Value("${imageFilePath}")
     private String imageFilePath;
+
+    /**
+     * 分页查询收录电影信息
+     * @param page
+     * @param rows
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/list")
+    public Map<String,Object> list(Film film, @RequestParam(value = "page",required = false)Integer page, @RequestParam(value = "rows",required = false)Integer rows)throws Exception{
+        List<Film> filmList = filmService.list(film,page-1,rows);
+        Long total = filmService.getCount(film);
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("rows",filmList);
+        resultMap.put("total",total);
+        return resultMap;
+    }
 
     /**
      * 添加或者修改信息

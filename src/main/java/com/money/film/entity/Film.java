@@ -1,5 +1,7 @@
 package com.money.film.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.money.film.util.CustomDateTimeSerializer;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -12,7 +14,7 @@ import java.util.Date;
  **/
 @Entity
 @Table(name = "t_film")
-@Data
+
 public class Film {
 
     @Id
@@ -35,4 +37,61 @@ public class Film {
     private Integer hot;//是否热门 1热门 0不热门
 
     private Date publishDate;//发布日期
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public Integer getHot() {
+        return hot;
+    }
+
+    public void setHot(Integer hot) {
+        this.hot = hot;
+    }
+
+    @JsonSerialize(using = CustomDateTimeSerializer.class)
+    public Date getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(Date publishDate) {
+        this.publishDate = publishDate;
+    }
 }
