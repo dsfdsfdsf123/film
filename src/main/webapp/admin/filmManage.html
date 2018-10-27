@@ -77,7 +77,7 @@
                                 $.messager.alert("系统提示","删除成功");
                                 $("#dg").datagrid("reload");
                             } else{
-                                $.messager.alert("数据删除失败");
+                                $.messager.alert("系统提示",result.errorInfo);
                             }
                         },"json");
                     }

@@ -1,6 +1,7 @@
 package com.money.film.controller;
 
 import com.money.film.Service.FilmService;
+import com.money.film.Service.WebSiteInfoService;
 import com.money.film.entity.Film;
 import com.money.film.util.DateUtil;
 import org.apache.commons.io.FileUtils;
@@ -32,6 +33,9 @@ public class FilmAdminController {
 
     @Resource
     private FilmService filmService;
+
+    @Resource
+    private WebSiteInfoService webSiteInfoService;
 
     @Value("${imageFilePath}")
     private String imageFilePath;
@@ -99,11 +103,22 @@ public class FilmAdminController {
     @RequestMapping("/delete")
     public Map<String,Object> delete(@RequestParam(value = "ids")String ids)throws Exception{
         String[] idsStr = ids.split(",");
-        for(String str:idsStr){
-            filmService.delete(Integer.parseInt(str));
-        }
         Map<String,Object> map = new HashMap<>();
-        map.put("success",true);
+        boolean flag = true;
+        for(String str:idsStr){
+            Integer filmId = Integer.parseInt(str);
+            if (webSiteInfoService.getByFilmId(filmId).size()>0){
+                flag = false;
+            }else{
+                filmService.delete(filmId);
+            }
+        }
+        if (flag){
+            map.put("success",true);
+        }else{
+            map.put("success",false);
+            map.put("errorInfo","电影动态信息中存在电影信息，不能删除");
+        }
         return map;
     }
 
