@@ -26,4 +26,16 @@ public interface WebSiteService {
      */
     public Long getCount(WebSite webSite);
 
+    /**
+     * 保存website
+     * @param webSite
+     */
+    public void save(WebSite webSite);
+
+    /**
+     * 根据id删除website
+     * @param id
+     */
+    public void delete(Integer id);
+
 }

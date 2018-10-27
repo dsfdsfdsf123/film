@@ -4,6 +4,7 @@ import com.money.film.Service.LinkService;
 import com.money.film.Service.WebSiteService;
 import com.money.film.entity.Link;
 import com.money.film.entity.WebSite;
+import com.money.film.util.StringUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,6 +41,30 @@ public class WebSiteAdminController {
         resultMap.put("rows",webSiteList);
         resultMap.put("total",total);
         return resultMap;
+    }
+
+    @RequestMapping("/save")
+    public Map<String,Object> save(WebSite webSite)throws Exception{
+        webSiteService.save(webSite);
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("success",true);
+        return resultMap;
+    }
+
+    @RequestMapping("/delete")
+    public Map<String,Object> delete(@RequestParam(value = "ids")String ids)throws Exception{
+        Map<String,Object> resultMap = new HashMap<>();
+        if (StringUtil.isNotEmpty(ids)){
+            String[] idsStr = ids.split(",");
+            for(String str:idsStr){
+                webSiteService.delete(Integer.parseInt(str));
+            }
+            resultMap.put("success",true);
+            return resultMap;
+        }else {
+            resultMap.put("success",false);
+            return resultMap;
+        }
     }
 
 

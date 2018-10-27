@@ -71,4 +71,14 @@ public class WebSiteServiceImpl implements WebSiteService
         });
         return count;
     }
+
+    @Override
+    public void save(WebSite webSite) {
+        webSiteRepository.save(webSite);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        webSiteRepository.deleteById(id);
+    }
 }
