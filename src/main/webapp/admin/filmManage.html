@@ -27,9 +27,8 @@
     </table>
     <div id="tb">
         <div>
-            <a href="javascript:openWebSiteAddDialog()" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
-            <a href="javascript:openWebSiteModifyDialog()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
-            <a href="javascript:deleteWebSite()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+            <a href="javascript:openFilmModifyTab()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
+            <a href="javascript:deleteFilm()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
         </div>
 
         <div>
@@ -59,6 +58,41 @@
             } else{
                 return "不是";
             }
+        }
+        
+        function deleteFilm() {
+            var selectRows = $("#dg").datagrid("getSelections");
+            if(selectRows.length == 0){
+                $.messager.alert("请选择","要删除的数据");
+            }else{
+                var strIds = [];
+                for (var i=0;i<selectRows.length;i++){
+                    strIds.push(selectRows[i].id);
+                }
+                var ids = strIds.join(",");
+                $.messager.confirm("系统提示","您确定删除这<strong color='red'>"+selectRows.length+"</strong>条数据吗?",function (r) {
+                    if (r){
+                        $.post("/admin/film/delete",{ids:ids},function (result) {
+                            if (result.success){
+                                $.messager.alert("系统提示","删除成功");
+                                $("#dg").datagrid("reload");
+                            } else{
+                                $.messager.alert("数据删除失败");
+                            }
+                        },"json");
+                    }
+                });
+            }
+        }
+
+        function openFilmModifyTab() {
+            var selectRows = $("#dg").datagrid("getSelections");
+            if (selectRows.length != 1){
+                $.messager.alert("系统提示","请选择一条数据修改");
+                return;
+            }
+            var row = selectRows[0];
+            window.parent.openTab("修改电影",'modifyFilm.html?id='+row.id,'icon-modifyFilm');
         }
 
     </script>

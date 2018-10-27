@@ -1,5 +1,6 @@
 package com.money.film.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.money.film.util.CustomDateTimeSerializer;
 import lombok.Data;
@@ -12,9 +13,9 @@ import java.util.Date;
  * @author liugang
  * @create 2018/10/23 22:38
  **/
+@JsonIgnoreProperties(value = {"handler","hibernateLazyInitializer","fieldHandler"})
 @Entity
 @Table(name = "t_film")
-
 public class Film {
 
     @Id

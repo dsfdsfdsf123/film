@@ -70,4 +70,14 @@ public class FilmServiceImpl implements FilmService {
 
         return count;
     }
+
+    @Override
+    public Film findById(Integer id) {
+        return fileRepository.getOne(id);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        fileRepository.deleteById(id);
+    }
 }

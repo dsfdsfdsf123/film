@@ -30,4 +30,18 @@ public interface FilmService {
      * @return
      */
     public Long getCount(Film film);
+
+    /**
+     * 根据id查找实体
+     * @param id
+     * @return
+     */
+    public Film findById(Integer id);
+
+    /**
+     * 删除film
+     * @param id
+     */
+    public void delete(Integer id);
+
 }

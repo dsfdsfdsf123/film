@@ -2,10 +2,11 @@ package com.money.film.controller;
 
 import com.money.film.Service.FilmService;
 import com.money.film.entity.Film;
-import com.money.film.entity.WebSite;
 import com.money.film.util.DateUtil;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.time.DateUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +27,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/film")
 public class FilmAdminController {
+
+    private static final Logger logger = LoggerFactory.getLogger(FilmAdminController.class);
 
     @Resource
     private FilmService filmService;
@@ -85,5 +88,34 @@ public class FilmAdminController {
         sb.append("window.parent.CKEDITOR.tools.callFunction("+ CKEditorFuncNum + ",'" +"/static/fileImages/"+ newFileName + "','')");
         sb.append("</script>");
         return sb.toString();
+    }
+
+    /**
+     * 删除电影信息
+     * @param ids
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/delete")
+    public Map<String,Object> delete(@RequestParam(value = "ids")String ids)throws Exception{
+        String[] idsStr = ids.split(",");
+        for(String str:idsStr){
+            filmService.delete(Integer.parseInt(str));
+        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("success",true);
+        return map;
+    }
+
+    /**
+     * 根据id查找实体
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/findById")
+    public Film findById(Integer id)throws Exception{
+        logger.info("测试能找到电影名称吗-------------"+filmService.findById(id).getName()+"---------------");
+        return filmService.findById(id);
     }
 }
