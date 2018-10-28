@@ -1,9 +1,7 @@
 package com.money.film.controller;
 
-import com.money.film.Service.LinkService;
 import com.money.film.Service.WebSiteInfoService;
 import com.money.film.Service.WebSiteService;
-import com.money.film.entity.Link;
 import com.money.film.entity.WebSite;
 import com.money.film.util.StringUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -79,6 +77,23 @@ public class WebSiteAdminController {
         }else {
             resultMap.put("success",false);
             return resultMap;
+        }
+    }
+
+    /**
+     * 下拉框
+     * @param q
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/comboList")
+    public List<WebSite> comboList(String q)throws Exception{
+        if (!StringUtil.isNotEmpty(q)){
+            return null;
+        }else{
+            WebSite webSite = new WebSite();
+            webSite.setUrl(q);
+            return webSiteService.list(webSite,0,30);
         }
     }
 

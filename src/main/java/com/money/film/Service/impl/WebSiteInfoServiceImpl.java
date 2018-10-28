@@ -1,7 +1,6 @@
 package com.money.film.Service.impl;
 
 import com.money.film.Service.WebSiteInfoService;
-import com.money.film.entity.WebSite;
 import com.money.film.entity.WebSiteInfo;
 import com.money.film.repository.WebSiteInfoRepository;
 import com.money.film.util.StringUtil;
@@ -76,11 +75,11 @@ public class WebSiteInfoServiceImpl implements WebSiteInfoService {
 
     @Override
     public void save(WebSiteInfo webSiteInfo) {
-
+        webSiteInfoRepository.save(webSiteInfo);
     }
 
     @Override
     public void delete(Integer id) {
-
+        webSiteInfoRepository.deleteById(id);
     }
 }

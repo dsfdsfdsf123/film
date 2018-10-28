@@ -17,38 +17,38 @@ public interface WebSiteInfoService {
      * @param pageSize
      * @return
      */
-    public List<WebSiteInfo> list(WebSiteInfo webSiteInfo, Integer page, Integer pageSize);
+    List<WebSiteInfo> list(WebSiteInfo webSiteInfo, Integer page, Integer pageSize);
 
     /**
      * 获取总记录数
      * @return
      */
-    public Long getCount(WebSiteInfo webSiteInfo);
+    Long getCount(WebSiteInfo webSiteInfo);
 
     /**
      * 根据电影id查询动态信息
      * @param filmId
      * @return
      */
-    public List<WebSiteInfo> getByFilmId(Integer filmId);
+    List<WebSiteInfo> getByFilmId(Integer filmId);
 
     /**
      * 根据电影网址id查询电影动态信息
      * @param webSiteId
      * @return
      */
-    public List<WebSiteInfo> getByWebSiteId(Integer webSiteId);
+    List<WebSiteInfo> getByWebSiteId(Integer webSiteId);
 
     /**
-     * 保存webSiteInfo
+     * 保存webSiteInfo电影动态信息
      * @param webSiteInfo
      */
-    public void save(WebSiteInfo webSiteInfo);
+    void save(WebSiteInfo webSiteInfo);
 
     /**
-     * 根据id删除websiteInfo
+     * 根据id删除websiteInfo电影动态信息
      * @param id
      */
-    public void delete(Integer id);
+    void delete(Integer id);
 
 }

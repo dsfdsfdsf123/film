@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,7 @@ public class WebSiteInfoAdminController {
 
     @RequestMapping("/save")
     public Map<String,Object> save(WebSiteInfo webSiteInfo)throws Exception{
+        webSiteInfo.setPublishDate(new Date());
         webSiteInfoService.save(webSiteInfo);
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("success",true);

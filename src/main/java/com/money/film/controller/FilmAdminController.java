@@ -4,6 +4,7 @@ import com.money.film.Service.FilmService;
 import com.money.film.Service.WebSiteInfoService;
 import com.money.film.entity.Film;
 import com.money.film.util.DateUtil;
+import com.money.film.util.StringUtil;
 import org.apache.commons.io.FileUtils;
 
 import org.slf4j.Logger;
@@ -132,5 +133,22 @@ public class FilmAdminController {
     public Film findById(Integer id)throws Exception{
         logger.info("测试能找到电影名称吗-------------"+filmService.findById(id).getName()+"---------------");
         return filmService.findById(id);
+    }
+
+    /**
+     * 下拉框
+     * @param q
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/comboList")
+    public List<Film> comboList(String q)throws Exception{
+        if (!StringUtil.isNotEmpty(q)){
+            return null;
+        }else{
+            Film film = new Film();
+            film.setName(q);
+            return filmService.list(film,0,30);
+        }
     }
 }
