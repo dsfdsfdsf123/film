@@ -3,8 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${title}+'-电影推酷网-'">Title</title>
+    <link rel="stylesheet" href="/static/bootstrap3/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/bootstrap3/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="/static/css/film.css" />
 </head>
 <body>
-${hello}
+    <div class="container">
+        <div class="row">
+            <div th:include="common/head::#h"></div>
+        </div>
+        <div class="row">
+            <div th:include="common/menu::#m"></div>
+
+            <div class="row">
+                <div class="col-md-8">
+
+                </div>
+                <div class="col-md-4">
+
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div th:include="common/foot::#f"></div>
+        </div>
+    </div>
 </body>
 </html>
