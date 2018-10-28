@@ -44,6 +44,9 @@ public class FilmServiceImpl implements FilmService {
                     if (StringUtil.isNotEmpty(film.getName())){
                         predicate.getExpressions().add(cb.like(root.get("name"),"%"+film.getName().trim()+"%"));
                     }
+                    if (film.getHot()!=null && film.getHot()==1){
+                        predicate.getExpressions().add(cb.equal(root.get("hot"),1));
+                    }
                 }
                 return predicate;
             }
@@ -61,6 +64,9 @@ public class FilmServiceImpl implements FilmService {
                 if (film!=null){
                     if (StringUtil.isNotEmpty(film.getName())){
                         predicate.getExpressions().add(cb.like(root.get("name"),"%"+film.getName().trim()+"%"));
+                    }
+                    if (film.getHot()!=null && film.getHot()==1){
+                        predicate.getExpressions().add(cb.equal(root.get("hot"),1));
                     }
                 }
                 return predicate;

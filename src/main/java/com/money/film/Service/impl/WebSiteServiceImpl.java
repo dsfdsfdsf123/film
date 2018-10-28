@@ -53,6 +53,12 @@ public class WebSiteServiceImpl implements WebSiteService
     }
 
     @Override
+    public List<WebSite> newWebSiteList(Integer page, Integer pageSize) {
+        Pageable pageable = PageRequest.of(page,pageSize, Sort.Direction.DESC,"id");
+        return webSiteRepository.findAll(pageable).getContent();
+    }
+
+    @Override
     public Long getCount(WebSite webSite) {
         Long count = webSiteRepository.count(new Specification() {
             @Override

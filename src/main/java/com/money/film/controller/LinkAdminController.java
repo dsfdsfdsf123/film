@@ -2,6 +2,7 @@ package com.money.film.controller;
 
 import com.money.film.Service.LinkService;
 import com.money.film.entity.Link;
+import com.money.film.run.StartupRunner;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,9 @@ public class LinkAdminController {
 
     @Resource
     private LinkService linkService;
+
+    @Resource
+    private StartupRunner startupRunner;
 
     /**
      * 分页查询友情链接
@@ -49,6 +53,7 @@ public class LinkAdminController {
     public Map<String,Object> save(Link link)throws Exception{
         Map<String,Object> resultMap = new HashMap<>();
         linkService.save(link);
+        startupRunner.loadData();
         resultMap.put("success",true);
         return resultMap;
     }
@@ -61,6 +66,7 @@ public class LinkAdminController {
         }
         Map<String,Object> map = new HashMap<>();
         map.put("success",true);
+        startupRunner.loadData();
         return map;
     }
 

@@ -3,6 +3,7 @@ package com.money.film.controller;
 import com.money.film.Service.WebSiteInfoService;
 import com.money.film.Service.WebSiteService;
 import com.money.film.entity.WebSite;
+import com.money.film.run.StartupRunner;
 import com.money.film.util.StringUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +29,9 @@ public class WebSiteAdminController {
     @Resource
     private WebSiteInfoService webSiteInfoService;
 
+    @Resource
+    private StartupRunner startupRunner;
+
     /**
      * 分页查询电影网址
      * @param page
@@ -48,6 +52,7 @@ public class WebSiteAdminController {
     @RequestMapping("/save")
     public Map<String,Object> save(WebSite webSite)throws Exception{
         webSiteService.save(webSite);
+        startupRunner.loadData();
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("success",true);
         return resultMap;
@@ -68,6 +73,7 @@ public class WebSiteAdminController {
                 }
             }
             if (flag){
+                startupRunner.loadData();
                 resultMap.put("success",true);
             }else{
                 resultMap.put("success",false);

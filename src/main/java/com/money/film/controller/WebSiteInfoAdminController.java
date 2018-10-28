@@ -4,6 +4,7 @@ import com.money.film.Service.WebSiteInfoService;
 import com.money.film.Service.WebSiteService;
 import com.money.film.entity.WebSite;
 import com.money.film.entity.WebSiteInfo;
+import com.money.film.run.StartupRunner;
 import com.money.film.util.StringUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,9 @@ public class WebSiteInfoAdminController {
     @Resource
     private WebSiteInfoService webSiteInfoService;
 
+    @Resource
+    private StartupRunner startupRunner;
+
     /**
      * 分页查询电影网址
      * @param page
@@ -48,6 +52,7 @@ public class WebSiteInfoAdminController {
     public Map<String,Object> save(WebSiteInfo webSiteInfo)throws Exception{
         webSiteInfo.setPublishDate(new Date());
         webSiteInfoService.save(webSiteInfo);
+        startupRunner.loadData();
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("success",true);
         return resultMap;
@@ -62,6 +67,7 @@ public class WebSiteInfoAdminController {
                 webSiteInfoService.delete(Integer.parseInt(str));
             }
             resultMap.put("success",true);
+            startupRunner.loadData();
             return resultMap;
         }else {
             resultMap.put("success",false);

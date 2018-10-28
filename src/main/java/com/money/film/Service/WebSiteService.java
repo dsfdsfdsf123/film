@@ -21,6 +21,14 @@ public interface WebSiteService {
     public List<WebSite> list(WebSite webSite, Integer page, Integer pageSize);
 
     /**
+     * 获取最新收录网址
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    public List<WebSite> newWebSiteList(Integer page,Integer pageSize);
+
+    /**
      * 获取总记录数
      * @return
      */

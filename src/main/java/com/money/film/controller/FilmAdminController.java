@@ -3,6 +3,7 @@ package com.money.film.controller;
 import com.money.film.Service.FilmService;
 import com.money.film.Service.WebSiteInfoService;
 import com.money.film.entity.Film;
+import com.money.film.run.StartupRunner;
 import com.money.film.util.DateUtil;
 import com.money.film.util.StringUtil;
 import org.apache.commons.io.FileUtils;
@@ -41,6 +42,9 @@ public class FilmAdminController {
     @Value("${imageFilePath}")
     private String imageFilePath;
 
+    @Resource
+    private StartupRunner startupRunner;
+
     /**
      * 分页查询收录电影信息
      * @param page
@@ -76,6 +80,7 @@ public class FilmAdminController {
         }
         film.setPublishDate(new Date());
         filmService.save(film);
+        startupRunner.loadData();
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("success",true);
         return resultMap;
@@ -120,6 +125,7 @@ public class FilmAdminController {
             map.put("success",false);
             map.put("errorInfo","电影动态信息中存在电影信息，不能删除");
         }
+        startupRunner.loadData();
         return map;
     }
 
