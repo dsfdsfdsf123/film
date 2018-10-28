@@ -21,7 +21,7 @@ import javax.servlet.ServletContextListener;
 @Component("startupRunner")
 public class StartupRunner implements CommandLineRunner , ServletContextListener {
 
-    private ServletContext application;
+    private ServletContext application = null;
 
     @Resource
     private FilmService filmService;
@@ -55,6 +55,8 @@ public class StartupRunner implements CommandLineRunner , ServletContextListener
         application.setAttribute("newIndexHotFilmList",filmService.list(film,0,32));
         //获取最新10条电影网站收录
         application.setAttribute("newWebSiteList",webSiteService.newWebSiteList(0,10));
+        //获取最新10条电影信息
+        application.setAttribute("newFilmList",filmService.list(null,0,10));
         //获取所有链接信息
         application.setAttribute("linkList",linkService.listAll());
     }
