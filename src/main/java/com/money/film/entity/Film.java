@@ -6,6 +6,7 @@ import com.money.film.util.CustomDateTimeSerializer;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 /**
@@ -22,6 +23,7 @@ public class Film {
     @GeneratedValue
     private Integer id;
 
+    @NotEmpty(message = "请输入您要搜索的电影！")
     @Column(length = 200)
     private String name;
 

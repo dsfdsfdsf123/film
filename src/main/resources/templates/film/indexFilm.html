@@ -1,0 +1,19 @@
+<meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org" >
+<div id="f">
+    <div class="data_list">
+        <div class="date_list_title">
+            <img src="/static/images/hot_icon.png">
+            热门电影
+        </div>
+        <div class="datas imageDatas">
+            <ul class="imageUL">
+                <li class="imageLi" th:each="newIndexHotFilmList:${application.newIndexHotFilmList}">
+                    <a target="_blank" th:href="'/film/'+${newIndexHotFilmList.id}" th:title="${newIndexHotFilmList.name}">
+                        <img class="indexFilm" th:src="'/static/fileImages/'+${newIndexHotFilmList.imageName}">
+                        <p th:text="${newIndexHotFilmList.name}"></p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

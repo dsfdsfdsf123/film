@@ -3,6 +3,7 @@ package com.money.film.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 跟路径以及其他请求
@@ -13,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
 
     @RequestMapping("/")
-    public String root(Model model){
-        model.addAttribute("hello","hello film");
-        model.addAttribute("title","首页");
-        return "index";
+    public ModelAndView root(){
+        ModelAndView model = new ModelAndView();
+        model.addObject("hello","hello film");
+        model.addObject("title","首页");
+        model.addObject("mainPage","film/indexFilm");
+        model.addObject("mainPageKey","#f");
+        model.setViewName("index");
+        return model;
     }
 
     /**

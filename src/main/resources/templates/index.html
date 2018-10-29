@@ -6,6 +6,16 @@
     <link rel="stylesheet" href="/static/bootstrap3/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/static/bootstrap3/css/bootstrap-theme.min.css" />
     <link rel="stylesheet" href="/static/css/film.css" />
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        window.onload = function () {
+            var error = [[${error}]];
+            if (error!=null){
+                alert(error);
+            }
+        }
+        /*]]>*/
+    </script>
 </head>
 <body>
     <div class="container">
@@ -17,7 +27,8 @@
 
             <div class="row">
                 <div class="col-md-8">
-
+                    <!--<div th:include="film/indexFilm::#f"></div>-->
+                    <div th:include="${mainPage}::${mainPageKey}"></div>
                 </div>
                 <div class="col-md-4">
 

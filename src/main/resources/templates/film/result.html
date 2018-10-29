@@ -1,0 +1,19 @@
+<meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org" >
+<div id="f">
+    <div class="data_list">
+        <div class="date_list_title">
+            <img src="/static/images/search_icon.png">
+            电影搜索结果（搜索到<strong style="color: red" th:text="${total}"></strong>条结果 最多显示32条）
+        </div>
+        <div class="datas imageDatas">
+            <ul class="imageUL">
+                <li class="imageLi" th:each="film:${filmList}">
+                    <a target="_blank" th:href="'/film/'+${film.id}" th:title="${film.name}">
+                        <img class="indexFilm" th:src="'/static/fileImages/'+${film.imageName}">
+                        <p th:text="${film.name}"></p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
