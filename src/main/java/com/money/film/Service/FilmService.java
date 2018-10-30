@@ -44,4 +44,18 @@ public interface FilmService {
      */
     public void delete(Integer id);
 
+    /**
+     * 获取上一篇
+     * @param id
+     * @return
+     */
+    public Film getLast(Integer id);
+
+    /**
+     *  获取下一篇
+     * @param id
+     * @return
+     */
+    public Film getNext(Integer id);
+
 }
