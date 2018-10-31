@@ -1,6 +1,7 @@
 package com.money.film.controller;
 
 import com.money.film.Service.FilmService;
+import com.money.film.Service.WebSiteInfoService;
 import com.money.film.entity.Film;
 import com.money.film.util.PageUtil;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,9 @@ public class FilmController {
 
     @Resource
     private FilmService filmService;
+
+    @Resource
+    private WebSiteInfoService webSiteInfoService;
 
     /**
      * 简单模糊查询
@@ -86,10 +90,11 @@ public class FilmController {
         Film film = filmService.findById(id);
         mav.addObject("film",film);
         mav.addObject("title",film.getTitle());
+        mav.addObject("randomFilmList",filmService.randomList(8));
+        mav.addObject("webSiteInfoList",webSiteInfoService.getByFilmId(id));
         mav.addObject("mainPage","film/view");
         mav.addObject("pageCode",this.getUpDownPageCode(filmService.getLast(id),filmService.getNext(id)));
         mav.addObject("mainPageKey","#f");
-        mav.addObject("film",film);
         mav.setViewName("index");
         return mav;
     }

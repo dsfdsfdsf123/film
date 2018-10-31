@@ -96,4 +96,9 @@ public class FilmServiceImpl implements FilmService {
     public Film getNext(Integer id) {
         return fileRepository.getNext(id);
     }
+
+    @Override
+    public List<Film> randomList(Integer n) {
+        return fileRepository.randomList(n);
+    }
 }

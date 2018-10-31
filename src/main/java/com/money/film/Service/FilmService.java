@@ -58,4 +58,6 @@ public interface FilmService {
      */
     public Film getNext(Integer id);
 
+    public List<Film> randomList(Integer n);
+
 }

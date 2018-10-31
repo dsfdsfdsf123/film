@@ -37,4 +37,14 @@ public class IndexController {
     public String toAdmin(){
         return "/admin/main";
     }
+
+    @RequestMapping("aboutMe")
+    public ModelAndView aboutMe(){
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("title","关于本站");
+        mav.addObject("mainPage","/common/aboutMe");
+        mav.addObject("mainPageKey","#a");
+        mav.setViewName("index");
+        return mav;
+    }
 }
