@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <title>后台管理界面-电影推酷网</title>
     <link rel="icon" href="/static/images/angryBird.ico" />
-    <link rel="stylesheet" href="../static/layui/css/layui.css">
-    <link rel="stylesheet" href="../static/csss/index.css">
-    <script src="../static/layui/layui.js"></script>
-    <script src="../static/js/jquery.js"></script>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <script src="/static/layui/layui.js"></script>
+    <script src="/static/js/jquery.js"></script>
 </head>
 <body>
     <div class="layui-layout layui-layout-admin">
 
         <div class="layui-header header header-demo" >
             <a class="logo">
-                <img src="../static/images/logo1.png" style="width: 200px;height: 60px;padding:0 -15px!important;"/>
+                <img src="/static/images/logo1.png" style="width: 200px;height: 60px;padding:0 -15px!important;"/>
             </a>
             <ul class="layui-nav layui-layout-right" lay-filter="header-right">
                 <li class="layui-nav-item" lay-unselect>
@@ -89,8 +89,9 @@
         </div>
 
     </div>
-    <script src="../static/js/index.js"></script>
+    <script src="/static/js/index.js"></script>
     <script>
+        /*<![CDATA[*/
         function logout() {
             layer.confirm('您确定要退出系统吗？',{
                 btn:['确定','取消']
