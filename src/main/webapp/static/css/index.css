@@ -1,0 +1,29 @@
+body{
+    line-height: 24px;
+    font: 14px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif;
+}
+.header-demo{
+    height: 60px;
+    border-bottom: none;
+}
+.site-demo-title{
+    position: fixed;
+    left: 200px;
+    right: 0;
+    top: 65px;
+}
+body .layui-layout-admin .site-demo{
+    bottom: 60px;
+    padding: 0;
+}
+.layui-layout-admin .site-demo-body{
+    top: 106px;
+}
+.footer{
+    text-align: center;
+    font-weight: 300;
+    color: #666666;
+}
+#manager{
+    color: white;
+}

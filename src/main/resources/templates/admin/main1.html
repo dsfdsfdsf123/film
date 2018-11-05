@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理界面-电影推酷网</title>
+    <link rel="icon" href="/static/images/angryBird.ico" />
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <link rel="stylesheet" href="../static/csss/index.css">
+    <script src="../static/layui/layui.js"></script>
+    <script src="../static/js/jquery.js"></script>
+</head>
+<body>
+    <div class="layui-layout layui-layout-admin">
+
+        <div class="layui-header header header-demo" >
+            <a class="logo">
+                <img src="../static/images/logo1.png" style="width: 200px;height: 60px;padding:0 -15px!important;"/>
+            </a>
+            <ul class="layui-nav layui-layout-right" lay-filter="header-right">
+                <li class="layui-nav-item" lay-unselect>
+                    <a href="javascript:;">
+                        <cite id="manager">管理员</cite>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a lay-href="set/user/info.html">基本资料</a></dd>
+                        <dd><a lay-href="set/user/password.html">修改密码</a></dd>
+                        <hr>
+                        <dd layadmin-event="logout" style="text-align: center;"><a>退出</a></dd>
+                    </dl>
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <ul class="layui-nav layui-nav-tree">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;">导航菜单</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="#" class="site-demo-active" data-url="addFilm.html" data-id="1" data-title="添加电影信息">
+                                <i class="layui-icon layui-icon-add-circle"></i>
+                                添加电影信息
+                                </a>
+                            </dd>
+                            <dd><a href="#" class="site-demo-active" data-url="infoManage.html" data-id="2" data-title="电影动态管理">
+                                <i class="layui-icon layui-icon-add-circle"></i>
+                                电影动态管理</a>
+                            </dd>
+                            <dd><a href="#" class="site-demo-active" data-url="filmManage.html" data-id="3" data-title="电影信息管理">
+                                <i class="layui-icon layui-icon-add-circle"></i>
+                                电影信息管理</a>
+                            </dd>
+                            <dd><a href="#" class="site-demo-active" data-url="webSiteManage.html" data-id="4" data-title="网址信息管理">
+                                <i class="layui-icon layui-icon-add-circle"></i>
+                                网址信息管理</a>
+                            </dd>
+                            <dd><a href="#" class="site-demo-active" data-url="linkManager.html" data-id="5" data-title="友情链接管理">
+                                <i class="layui-icon layui-icon-add-circle"></i>
+                                友情链接管理</a>
+                            </dd>
+                            <dd><a href="javascript:logout()">
+                                <i class="layui-icon layui-icon-add-circle"></i>
+                                安全退出</a>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-tab layui-tab-brief " lay-filter="demo" lay-allowClose="true">
+
+            <ul class="layui-tab-title site-demo-title">
+                <li class="layui-this" lay-id="111"><i class="layui-icon layui-icon-home"></i>首页</li>
+            </ul>
+
+            <div class="layui-body layui-tab-content site-demo site-demo-body">
+                <div class="layui-tab-item layui-show">
+                    <div style="text-align: center;padding-top: 100px">
+                        <strong style="color: red;font-size: 50px">欢迎使用</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-footer footer footer-demo">
+            重构电影推酷网后台管理界面
+        </div>
+
+    </div>
+    <script src="../static/js/index.js"></script>
+    <script>
+        function logout() {
+            layer.confirm('您确定要退出系统吗？',{
+                btn:['确定','取消']
+            }, function () {
+                window.location.href="/logout";
+            });
+        }
+    </script>
+</body>
+</html>
