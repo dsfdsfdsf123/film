@@ -9,8 +9,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -28,6 +30,33 @@ public class FilmController {
 
     @Resource
     private WebSiteInfoService webSiteInfoService;
+
+    /**
+     * 测试在同一个controller里面跳转
+     * @param request
+     * @param attributes
+     * @return
+     */
+    @RequestMapping("/test")
+    public ModelAndView sendValue(HttpServletRequest request, RedirectAttributes attributes){
+        ModelAndView mav = new ModelAndView();
+        String water = request.getParameter("water");
+        attributes.addAttribute("water",water);
+        mav.setViewName("redirect:/film/getValue");
+        return mav;
+    }
+
+    /**
+     * 测试在同一个controller里面跳转
+     * @param request
+     * @return
+     */
+    @RequestMapping("/getValue")
+    public ModelAndView getValue(HttpServletRequest request){
+        String water = request.getParameter("water");
+        ModelAndView mav = new ModelAndView("/");
+        return mav;
+    }
 
     /**
      * 简单模糊查询
