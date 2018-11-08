@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
@@ -68,6 +69,17 @@ public class FilmAdminController {
     public ModelAndView search(@PathVariable(value = "id",required = false)Integer id)throws Exception{
         ModelAndView mav = new ModelAndView();
         return mav;
+    }
+
+    @RequestMapping("/uploadImage")
+    public Map<String,Object> uploadImage(MultipartFile file, HttpServletRequest request)throws Exception{
+        Map<String,Object> map = new HashMap<>();
+        String fileName = file.getOriginalFilename();
+        String suffixName = fileName.substring(fileName.lastIndexOf("."));
+        String newFileName = DateUtil.getCurrentDateStr()+suffixName;
+        FileUtils.copyInputStreamToFile(file.getInputStream(),new File(imageFilePath+newFileName));
+        map.put("newFileName" ,newFileName);
+        return map;
     }
 
     /**
