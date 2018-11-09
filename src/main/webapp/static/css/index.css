@@ -27,3 +27,6 @@ body .layui-layout-admin .site-demo{
 #manager{
     color: white;
 }
+.layui-show{
+    height: 100%!important;
+}

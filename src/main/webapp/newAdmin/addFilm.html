@@ -10,7 +10,7 @@
 </head>
 <body style="margin: 10px;">
 
-    <form class="layui-form" action="">
+    <form class="layui-form" enctype="multipart/form-data">
         <div class="layui-form-item">
             <label class="layui-form-label">电影名称</label>
             <div class="layui-input-block">
@@ -65,6 +65,7 @@
         layui.use(['form','upload'],function () {
             var form = layui.form;
             var upload = layui.upload;
+            var layer = layui.layer;
 
             upload.render({
                 elem: '#chooseImage'
@@ -73,17 +74,66 @@
                 ,auto: false
                 ,bindAction: '#uploadBtn'
                 ,done: function(res){
-                    alert(res.data.src);
-                    $("[name=imageName]").val(res.data.src);
+                    console.log(res);
+                    console.log(res.newFileName);
+                    $("[name=imageName]").val(res.newFileName);
+                    layer.msg("上传成功");
                 }
             });
 
             //监听提交
             form.on('submit(addFilm)', function(data){
-                layer.msg(JSON.stringify(data.field));
+                var content=CKEDITOR.instances.content.getData();
+                if(content == ""){
+                    layer.alert("内容不能为空");
+                    return false;
+                }
+                var name = data.field.name;
+                var title = data.field.title;
+                var imageName = data.field.imageName;
+                var hot = data.field.hot;
+                var params = {
+                    "name" : name,
+                    "title" : title,
+                    "imageName" : imageName,
+                    "hot" : hot,
+                    "content" : content
+                };
+                $.ajax({
+                    async:false,
+                    cache:false,
+                    url:'/admin/film/save',
+                    type:'post',
+                    dataType:"json",
+                    data: params,
+                    success:function (result) {
+                        if(result.success){
+                            resetValue();
+                            layer.msg("系统提示，添加成功", { icon: 6 });
+                        }else{
+                            layer.msg("系统提示，添加失败，请联系管理员", { icon: 5});
+                        }
+                    },
+                    error:function (XMLHttpRequest, textStatus) {
+                        layer.alert("状态码: "+XMLHttpRequest.status +" 错误信息: "+ textStatus);
+                    }
+                });
+
+                // layer.msg(JSON.stringify(data.field));
                 return false;
             });
         });
+
+        function resetValue(){
+            $("#name").val("");
+            $("#title").val("");
+            $("#imageFile").val("");
+            $("#yes").prop("checked",true);
+            CKEDITOR.instances.content.setData("");
+
+        }
+
+        CKEDITOR.replace("content");
     </script>
 </body>
 </html>

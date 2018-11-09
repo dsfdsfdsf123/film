@@ -71,6 +71,13 @@ public class FilmAdminController {
         return mav;
     }
 
+    /**
+     * layui的上传图片接口
+     * @param file
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/uploadImage")
     public Map<String,Object> uploadImage(MultipartFile file, HttpServletRequest request)throws Exception{
         Map<String,Object> map = new HashMap<>();
@@ -90,14 +97,20 @@ public class FilmAdminController {
      * @throws Exception
      */
     @RequestMapping("/save")
-    public Map<String,Object> save(Film film,@RequestParam("imageFile")MultipartFile file)throws Exception{
-        if(!file.isEmpty()){
-            String fileName = file.getOriginalFilename();//获取文件名
-            String suffixName = fileName.substring(fileName.lastIndexOf("."));//获取后缀名
-            String newFileName = DateUtil.getCurrentDateStr()+suffixName;
-            FileUtils.copyInputStreamToFile(file.getInputStream(),new File(imageFilePath+newFileName));
-            film.setImageName(newFileName);
+    public Map<String,Object> save(Film film,@RequestParam(value = "imageFile",required = false)MultipartFile file,@RequestParam("content")String content)throws Exception{
+        try{
+            if(!file.isEmpty()){
+                String fileName = file.getOriginalFilename();//获取文件名
+                String suffixName = fileName.substring(fileName.lastIndexOf("."));//获取后缀名
+                String newFileName = DateUtil.getCurrentDateStr()+suffixName;
+                FileUtils.copyInputStreamToFile(file.getInputStream(),new File(imageFilePath+newFileName));
+                film.setImageName(newFileName);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("-------------------没传图片------------------");
         }
+        film.setContent(content);
         film.setPublishDate(new Date());
         filmService.save(film);
         startupRunner.loadData();

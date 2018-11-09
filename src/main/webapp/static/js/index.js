@@ -7,9 +7,10 @@ layui.use(['element','layer'],function () {
         tabAdd: function (url,id,name) {
             element.tabAdd('demo',{
                 title:name,
-                content: '<iframe data-frameid="'+id+'" scrolling="auto" frameborder="0" src="/newAdmin/'+url+'" style="width:100%;height:99%;"></iframe>',
+                content: '<iframe data-frameid="'+id+'" scrolling="auto" frameborder="0" src="/newAdmin/'+url+'" style="width:100%;height:99%;overflow: hidden"></iframe>',
                 id:id
             });
+
             // CustomRightClick(id);
             // FrameWH();//计算iframe层的大小
         },
