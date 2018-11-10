@@ -30,3 +30,7 @@ body .layui-layout-admin .site-demo{
 .layui-show{
     height: 100%!important;
 }
+.demoTable{
+    margin-left: 10px;
+    margin-top: 10px;
+}

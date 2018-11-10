@@ -42,4 +42,20 @@ public interface LinkService {
      * @param id
      */
     public void delete(Integer id);
+
+    /**
+     * 根据链接名称获取list
+     * @param page
+     * @param pageSize
+     * @param linkName
+     * @return
+     */
+    public List<Link> linkList(Integer page, Integer pageSize,String linkName);
+
+    /**
+     * 获取总数
+     * @param linkName
+     * @return
+     */
+    public Long total(String linkName);
 }

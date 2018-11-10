@@ -1,12 +1,23 @@
 package com.money.film.Service.impl;
 
 import com.money.film.Service.LinkService;
+import com.money.film.entity.Film;
 import com.money.film.entity.Link;
 import com.money.film.repository.LinkRepository;
+import com.money.film.util.StringUtil;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
@@ -44,4 +55,16 @@ public class LinkServiceImpl implements LinkService {
     public void delete(Integer id) {
         linkRepository.deleteById(id);
     }
+
+    @Override
+    public List<Link> linkList(Integer page, Integer pageSize,String linkName) {
+        Pageable pageable = PageRequest.of(page,pageSize);
+        return linkRepository.findByLinkName(linkName,pageable);
+    }
+
+    @Override
+    public Long total(String linkName) {
+        return linkRepository.total(linkName);
+    }
+
 }
