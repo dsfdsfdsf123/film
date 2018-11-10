@@ -85,7 +85,7 @@
             page:true,//开启分页
             id:'testReload', //这个id挺重要的  你对table做操作时候需要使用到  比如reload的时候
             limits:[5,10,15,20],
-            limit:5
+            limit:15
         });
 
         table.on('tool(table)',function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
@@ -161,10 +161,48 @@
                         linkName:demoReload
                     }
                 });
+            },
+            deleteByIds : function () {
+                var checkStatus =  table.checkStatus('testReload'),
+                       data = checkStatus.data;
+                var strIds = [];
+                for(var i=0;i<data.length;i++){
+                    strIds.push(data[i].id);
+                }
+                var ids = strIds.join(",");
+                console.log(ids);
+                layer.confirm("您确定要删除这"+data.length+"条数据吗？",function (index) {
+                    $.ajax({
+                        async:false,
+                        cache:false,
+                        url:'/admin/link/delete',
+                        type:'POST',
+                        dataType:"json",
+                        data: {ids:ids},
+                        success:function (result) {
+                            if(result.success){
+                                layer.close(index);
+                                table.reload('testReload');
+                                parent.layer.msg("系统提示，操作成功", { icon: 6 });
+                            }else{
+                                parent.layer.msg("系统提示，添加失败，请联系管理员", { icon: 5});
+                            }
+                        },
+                        error:function (XMLHttpRequest, textStatus) {
+                            layer.alert("状态码: "+XMLHttpRequest.status +" 错误信息: "+ textStatus);
+                        }
+                    });
+                });
             }
+            
         };
 
         $('#search').on('click',function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        $('#deleteByIds').on('click',function () {
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });
