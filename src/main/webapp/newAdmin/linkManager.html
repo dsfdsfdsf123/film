@@ -17,8 +17,8 @@
         </div>
         <button class="layui-btn layui-bg-blue" data-type="reload" id="search">搜索</button>
         <div class="layui-btn-group demoTableSon">
-            <button class="layui-btn" data-type="addLink">添加</button>
-            <button class="layui-btn layui-btn-danger" data-type="deleteByIds">删除</button>
+            <button class="layui-btn" data-type="addLink" id="addLink">添加</button>
+            <button class="layui-btn layui-btn-danger" data-type="deleteByIds" id="deleteByIds">删除</button>
         </div>
     </div>
 <table class="layui-hide" id="test" lay-filter="table"></table>
@@ -29,10 +29,48 @@
 <script type="text/html" id="urlTpl">
     <a href="{{d.url}}" target="_blank">{{d.url}}</a>
 </script>
+    <form class="layui-form" id="linkForm" style="margin-right: 20px;margin-top: 20px">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">链接名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="linkName" id="linkName" required  lay-verify="required" placeholder="请输入链接名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">链接地址</label>
+            <div class="layui-input-block">
+                <input type="text" name="url" id="url" required  lay-verify="required" placeholder="请输入链接地址" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">排序</label>
+            <div class="layui-input-block">
+                <input type="text" name="sort" id="sort" required  lay-verify="required" placeholder="请输入排序" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="addLink">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+
 <script type="text/javascript">
+    $("#linkForm").hide();
+    function resetValue(){
+        $("#linkName").val("");
+        $("#url").val("");
+        $("#sort").val("");
+    }
     layui.use(['form','layer','table','upload'],function () {
         var table = layui.table,
-               layer = layui.layer;
+            layer = layui.layer,
+            form = layui.form;
         table.render({
             elem:"#test",
             url:"/admin/link/linkList",
@@ -85,7 +123,28 @@
                     });
                 });
             }else if(layEvent === 'edit'){
-                layer.msg("我要编辑你了，怕不怕啊");
+                console.log(data);
+                index = layer.open({
+                    type:1,
+                    title: '添加链接',
+                    shadeClose: true,
+                    shade: false,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['400px', '350px'],
+                    content: $('#linkForm')
+                });
+                $("form").prepend(
+                    "<div class=\"layui-form-item\">\n" +
+                    "            <label class=\"layui-form-label\">id</label>\n" +
+                    "            <div class=\"layui-input-block\">\n" +
+                    "                <input type=\"text\" name=\"id\" id=\"id\" required  lay-verify=\"required\" placeholder=\"请输入链接名称\" autocomplete=\"off\" class=\"layui-input\" readonly>\n" +
+                    "            </div>\n" +
+                    "        </div>"
+                );
+                $("#id").val(data.id);
+                $("#linkName").val(data.linkName);
+                $("#url").val(data.url);
+                $("#sort").val(data.sort);
             }
         });
 
@@ -109,6 +168,42 @@
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });
+
+        $('#addLink').on('click',function () {
+            index = layer.open({
+                type:1,
+                title: '添加链接',
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['400px', '350px'],
+                content: $('#linkForm')
+            });
+        });
+
+        form.on('submit(addLink)',function (data) {
+            $.ajax({
+                async:false,
+                cache:false,
+                url:'/admin/link/save',
+                type:'post',
+                dataType:"json",
+                data: data.field,
+                success:function (result) {
+                    if(result.success){
+                        layer.close(index);
+                        table.reload('testReload');
+                        parent.layer.msg("系统提示，操作成功", { icon: 6 });
+                    }else{
+                        parent.layer.msg("系统提示，添加失败，请联系管理员", { icon: 5});
+                    }
+                },
+                error:function (XMLHttpRequest, textStatus) {
+                    layer.alert("状态码: "+XMLHttpRequest.status +" 错误信息: "+ textStatus);
+                }
+            });
+        });
+
     });
 </script>
 
