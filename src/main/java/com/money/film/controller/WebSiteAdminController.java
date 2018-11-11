@@ -49,6 +49,18 @@ public class WebSiteAdminController {
         return resultMap;
     }
 
+    @RequestMapping("/webSiteList")
+    public Map<String,Object> webSiteList(WebSite webSite,@RequestParam(value = "page",required = false)Integer page,@RequestParam(value = "limit",required = false)Integer limit)throws Exception{
+        List<WebSite> webSiteList = webSiteService.list(webSite,page-1,limit);
+        Long total = webSiteService.getCount(webSite);
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("data",webSiteList);
+        resultMap.put("count",total);
+        resultMap.put("code",0);
+        resultMap.put("msg","查询数据成功");
+        return resultMap;
+    }
+
     @RequestMapping("/save")
     public Map<String,Object> save(WebSite webSite)throws Exception{
         webSiteService.save(webSite);
@@ -101,6 +113,14 @@ public class WebSiteAdminController {
             webSite.setUrl(q);
             return webSiteService.list(webSite,0,30);
         }
+    }
+
+    @RequestMapping("/deleteById")
+    public Map<String,Object> deleteById(@RequestParam(value = "id")Integer id){
+        webSiteService.delete(id);
+        Map<String,Object> map =new HashMap<>();
+        map.put("success",true);
+        return map;
     }
 
 

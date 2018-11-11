@@ -76,7 +76,7 @@
             url:"/admin/link/linkList",
             cols:[[
                 {type:'checkbox'},
-                {field:'id',title:'id'},
+                {field:'id',title:'编号'},
                 {field:'linkName',title:'链接名称'},
                 {field:'url',title:'链接地址',templet: '#urlTpl'},
                 {field:'sort',title:'排序'},
@@ -131,15 +131,20 @@
                     shade: false,
                     maxmin: true, //开启最大化最小化按钮
                     area: ['400px', '350px'],
-                    content: $('#linkForm')
+                    content: $('#linkForm'),
+                    end:function () {
+                        $("#prependId").remove();
+                    }
                 });
                 $("form").prepend(
+                    "<div id='prependId'>\n"+
                     "<div class=\"layui-form-item\">\n" +
-                    "            <label class=\"layui-form-label\">id</label>\n" +
+                    "            <label class=\"layui-form-label\">编号</label>\n" +
                     "            <div class=\"layui-input-block\">\n" +
                     "                <input type=\"text\" name=\"id\" id=\"id\" required  lay-verify=\"required\" placeholder=\"请输入链接名称\" autocomplete=\"off\" class=\"layui-input\" readonly>\n" +
                     "            </div>\n" +
-                    "        </div>"
+                    "        </div>\n" +
+                    "</div>"
                 );
                 $("#id").val(data.id);
                 $("#linkName").val(data.linkName);
