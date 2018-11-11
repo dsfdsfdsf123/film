@@ -20,7 +20,7 @@
     </div>
     <button class="layui-btn layui-bg-blue" data-type="reload" id="search">搜索</button>
     <div class="layui-btn-group demoTableSon">
-        <button class="layui-btn" data-type="addLink" id="addLink">添加</button>
+        <button class="layui-btn" data-type="addWebSite" id="addWebSite">添加</button>
         <button class="layui-btn layui-btn-danger" data-type="deleteByIds" id="deleteByIds">删除</button>
     </div>
 </div>
@@ -115,7 +115,7 @@
             }else if(layEvent == "edit"){
                 index = layer.open({
                     type:1,
-                    title:'添加网址信息',
+                    title:'编辑网址信息',
                     shadeClose: true,
                     shade: false,
                     maxmin: true, //开启最大化最小化按钮
@@ -164,8 +164,77 @@
             });
         });
 
+        $("#addWebSite").on('click',function () {
+            index = layer.open({
+                type:1,
+                title:'添加网址信息',
+                shadeClose:true,
+                shade:false,
+                maxmin:true,
+                area: ['400px', '350px'],
+                content: $('#webSiteForm')
+            });
+        });
 
+        var active = {
 
+            reload : function () {
+                var demoReload1 = $('#demoReload1').val();
+                var demoReload2 = $('#demoReload2').val();
+                table.reload('testReload',{
+                    page:{
+                        curr:1
+                    },
+                    where:{
+                        name:demoReload1,
+                        url:demoReload2
+                    }
+                });
+            },
+
+            deleteByIds: function () {
+                var checkStatus =  table.checkStatus('testReload');
+                var data = checkStatus.data;
+                var strIds = [];
+                for(var i=0;i<data.length;i++){
+                    strIds.push(data[i].id)
+                }
+                var ids = strIds.join(",");
+                console.log(ids);
+                layer.confirm("您确定要删除这"+data.length+"条数据吗？",function (index) {
+                    $.ajax({
+                        async:false,
+                        cache:false,
+                        url:'/admin/webSite/delete',
+                        type:'POST',
+                        dataType:'json',
+                        data:{ids:ids},
+                        success:function (result) {
+                            if(result.success){
+                                layer.close(index);
+                                table.reload('testReload');
+                                parent.layer.msg("系统提示，操作成功", { icon: 6 });
+                            }else{
+                                parent.layer.msg("系统提示，添加失败，请联系管理员", { icon: 5});
+                            }
+                        },
+                        error:function (XMLHttpRequest, textStatus) {
+                            layer.alert("状态码: "+XMLHttpRequest.status +" 错误信息: "+ textStatus);
+                        }
+                    });
+                });
+            }
+        };
+
+        $('#search').on('click',function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        $('#deleteByIds').on('click',function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
 
     });
 </script>
