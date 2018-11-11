@@ -28,6 +28,7 @@ spring:
         max-wait: -1
         max-idle: 8
         min-idle: 0
-    timeout: 0
+    timeout: 10000
+    database: 0
 
 imageFilePath: D://WorkPlace/ideaProjects/film/src/main/webapp/static/fileImages/
