@@ -12,6 +12,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -21,6 +23,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import javax.annotation.Resource;
+import java.time.Duration;
 
 /**
  * redis的配置类
@@ -78,6 +81,8 @@ public class RedisConfig extends CachingConfigurerSupport {
         private  String host;
         @Value("${spring.redis.port}")
         private  int port;
+        @Value("${spring.redis.database}")
+        private int database;
         @Value("${spring.redis.timeout}")
         private  int timeout;
         @Value("${spring.redis.jedis.pool.max-idle}")
@@ -87,10 +92,15 @@ public class RedisConfig extends CachingConfigurerSupport {
 
         @Bean
         JedisConnectionFactory jedisConnectionFactory() {
-            JedisConnectionFactory factory = new JedisConnectionFactory();
-            factory.setHostName(host);
-            factory.setPort(port);
-            factory.setTimeout(timeout);
+            RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
+            configuration.setHostName(host);
+            configuration.setPort(port);
+            configuration.setDatabase(database);
+            JedisClientConfiguration.JedisClientConfigurationBuilder jedisClientConfiguration =
+                    JedisClientConfiguration.builder();
+            jedisClientConfiguration.connectTimeout(Duration.ofMillis(timeout));
+            JedisConnectionFactory factory = new JedisConnectionFactory(configuration,
+                    jedisClientConfiguration.build());
             return factory;
         }
         @Bean
@@ -98,9 +108,7 @@ public class RedisConfig extends CachingConfigurerSupport {
             JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
             jedisPoolConfig.setMaxIdle(maxIdle);
             jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
-
-            JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout);
-            return jedisPool;
+            return new JedisPool(jedisPoolConfig, host, port, timeout);
         }
     }
 
