@@ -78,9 +78,9 @@
                 {type:'checkbox'},
                 {field:'id',title:'编号'},
                 {field:'linkName',title:'链接名称'},
-                {field:'url',title:'链接地址',templet: '#urlTpl'},
+                {field:'url',title:'链接地址',templet: '#urlTpl'},//绑定tpl表达式
                 {field:'sort',title:'排序'},
-                {fixed: 'right',title: '操作', width:180, align:'center', toolbar: '#barDemo'}  //绑定tpl表达式
+                {fixed: 'right',title: '操作', width:180, align:'center', toolbar: '#barDemo'}
             ]],
             page:true,//开启分页
             id:'testReload', //这个id挺重要的  你对table做操作时候需要使用到  比如reload的时候

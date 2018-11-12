@@ -65,6 +65,26 @@ public class FilmAdminController {
         return resultMap;
     }
 
+    /**
+     * layui的table获取数据的接口
+     * @param film
+     * @param page
+     * @param limit
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/filmList")
+    public Map<String,Object> filmList(Film film,@RequestParam(value = "page",required = false)Integer page,@RequestParam(value = "limit",required = false)Integer limit)throws Exception{
+        List<Film> filmList = filmService.list(film,page-1,limit);
+        Long total = filmService.getCount(film);
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("data",filmList);
+        resultMap.put("count",total);
+        resultMap.put("code",0);
+        resultMap.put("msg","接受成功");
+        return resultMap;
+    }
+
     @RequestMapping("/list/{id}")
     public ModelAndView search(@PathVariable(value = "id",required = false)Integer id)throws Exception{
         ModelAndView mav = new ModelAndView();

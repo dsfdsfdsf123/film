@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>电影信息管理</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <script src="/static/layui/layui.js"></script>
+    <script src="/static/js/jquery.js"></script>
+</head>
+<body>
+<table class="layui-hide" id="test" lay-filter="table"></table>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="imageTpl">
+    <div class="layer-photos-demo" onclick="imageClick()" style="cursor:pointer;">
+        <img  layer-pid="" layer-src="/static/fileImages/{{d.imageName}}" src="/static/fileImages/{{d.imageName}}" alt="图片名">
+    </div>';
+</script>
+<script type="text/html" id="hotTpl">
+    {{# if(d.hot == 1){  }}
+        <p color="blue">是</p>
+    {{# }else{             }}
+         <p color="blue">否</p>
+    {{#      }      }}
+</script>
+
+<script type="text/javascript">
+    layui.use(['layer','table','form','upload'],function () {
+        var layer = layui.layer;
+        var table = layui.table;
+        var form = layui.layer;
+        var upload = layui.layer;
+        function randomNumber() {
+            return Math.ceil(Math.random()*6);
+        }
+        function imageClick(){
+            layer.photos({
+                photos:'.layer-photos-demo',
+                anim:randomNumber()
+            });
+        }
+        table.render({
+            elem:"#test",
+            url:"/admin/film/filmList",
+            cols:[[
+                {type:'checkbox'},
+                {field:'id',title:'编号'},
+                {field:'imageName',title:'电影图片',templet: '#imageTpl'},
+                {field:'name',title:'电影名称'},
+                {field:'hot',title:'是否热门',templet: '#hotTpl'},
+                {field:'publishDate',title:'发布日期'},
+                {fixed: 'right',title: '操作', width:180, align:'center', toolbar: '#barDemo'}  //绑定tpl表达式
+            ]],
+            page:true,//开启分页
+            id:'testReload', //这个id挺重要的  你对table做操作时候需要使用到  比如reload的时候
+            limits:[5,10,15,20],
+            limit:10,
+            done:function (res,curr,count) {
+                imageClick();
+            }
+        });
+
+        table.on('tool(table)',function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            if(layEvent === 'del'){
+                layer.msg("删除操作");
+            }else if(layEvent === 'edit'){
+                layer.msg("编辑操作");
+            }
+        });
+
+    })
+</script>
+</body>
+</html>

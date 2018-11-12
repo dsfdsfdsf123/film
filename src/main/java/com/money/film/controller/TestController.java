@@ -5,10 +5,12 @@ import com.money.film.entity.WebSite;
 import com.money.film.repository.WebSiteRepository;
 import com.money.film.util.RedisOperator;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -17,7 +19,7 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping("/testRedis")
-public class RedisController {
+public class TestController {
 
     @Resource
     private RedisOperator redisOperator;
@@ -40,4 +42,5 @@ public class RedisController {
     public String get(){
         return redisOperator.get("json:list");
     }
+
 }
