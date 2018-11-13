@@ -32,4 +32,12 @@ public interface FilmRepository extends JpaRepository<Film,Integer>, JpaSpecific
      */
     @Query(value = "select * from t_film order by rand() limit ?1",nativeQuery = true)
     public List<Film> randomList(Integer n);
+
+    /**
+     * 用id获取film实体
+     * @param id
+     * @return
+     */
+    @Query(value = "select * from t_film where id=?1",nativeQuery = true)
+    Film findByFilmId(Integer id);
 }

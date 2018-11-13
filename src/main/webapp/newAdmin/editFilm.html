@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑电影界面</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <script src="/static/layui/layui.js"></script>
+    <script src="/static/js/jquery.js"></script>
+    <script type="text/javascript" src="/static/ckeditor/ckeditor.js"></script>
+</head>
+<body>
+<form class="layui-form layui-form-pane" enctype="multipart/form-data" style="margin: 15px">
+    <div class="layui-form-item">
+        <label class="layui-form-label">电影名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" id="name"  required  lay-verify="required" placeholder="请输入电影的名称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" id="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">电影图片</label>
+        <div class="layui-input-block">
+            <input type="hidden" id="imageName" name="imageName" />
+            <img class="layui-">
+            <button type="button" class="layui-btn" id="chooseImage">
+                <i class="layui-icon">&#xe67c;</i>选择文件
+            </button>
+            <button type="button" class="layui-btn layui-btn-warm" id="uploadBtn">开始上传</button>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">设置热门</label>
+        <div class="layui-input-block">
+            <input type="radio" id="yes" name="hot" value="1" title="是" checked>
+            <input type="radio" id="no" name="hot" value="0" title="否">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">内容</label>
+        <div class="layui-input-block">
+            <textarea id="content" name="content" rows="30" cols="80"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <input type="hidden" id="id" name="id">
+            <button class="layui-btn" lay-submit lay-filter="addFilm">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    CKEDITOR.replace("content");//替换文本域
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i");
+        var url = decodeURI(decodeURI(window.location.search));
+        var r = url.substr(1).match(reg);
+        if (r!=null) {
+            return unescape(r[2]);
+        }else{
+            return null;
+        }
+    }
+    var id = getQueryString("id");
+    $.post("/admin/film/findById",{id:id},function (result) {
+        $("#id").val(result.id);
+        $("#name").val(result.name);
+        $("#title").val(result.title);
+        $("#imageName").val(result.imageName);
+        console.log($("#imageName").val())
+        if(result.hot == 1){
+            $("#yes").prop("checked",true);
+        }else{
+            $("#no").prop("checked",true);
+        }
+        CKEDITOR.instances.content.setData(result.content);
+    },"json");
+    layui.use(['layer','form','upload'],function () {
+        var layer = layui.layer;
+        var form = layui.form;
+        var upload = layui.upload;
+
+        upload.render({
+            elem: '#chooseImage'
+            ,url: '/admin/film/uploadImage'
+            ,accept: 'images'
+            ,auto: false
+            ,bindAction: '#uploadBtn'
+            ,done: function(res){
+                console.log(res);
+                console.log(res.newFileName);
+                $("[name=imageName]").val(res.newFileName);
+                layer.msg("上传成功");
+            }
+        });
+
+        //监听提交
+        form.on('submit(addFilm)', function(data){
+            var content=CKEDITOR.instances.content.getData();
+            if(content == ""){
+                layer.alert("内容不能为空");
+                return false;
+            }
+            var name = data.field.name;
+            var title = data.field.title;
+            var imageName = data.field.imageName;
+            var hot = data.field.hot;
+            var params = {
+                "id" : id,
+                "name" : name,
+                "title" : title,
+                "imageName" : imageName,
+                "hot" : hot,
+                "content" : content
+            };
+            $.ajax({
+                async:false,
+                cache:false,
+                url:'/admin/film/save',
+                type:'post',
+                dataType:"json",
+                data: params,
+                success:function (result) {
+                    if(result.success){
+                        resetValue();
+                        layer.msg("系统提示，添加成功", { icon: 6 });
+                    }else{
+                        layer.msg("系统提示，添加失败，请联系管理员", { icon: 5});
+                    }
+                },
+                error:function (XMLHttpRequest, textStatus) {
+                    layer.alert("状态码: "+XMLHttpRequest.status +" 错误信息: "+ textStatus);
+                }
+            });
+
+            // layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+
+        function resetValue(){
+            $("#name").val("");
+            $("#title").val("");
+            $("#imageFile").val("");
+            $("#yes").prop("checked",true);
+            CKEDITOR.instances.content.setData("");
+
+        }
+
+    });
+
+</script>
+</body>
+</html>

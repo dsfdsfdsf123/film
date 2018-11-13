@@ -101,4 +101,9 @@ public class FilmServiceImpl implements FilmService {
     public List<Film> randomList(Integer n) {
         return fileRepository.randomList(n);
     }
+
+    @Override
+    public Film findByFilmId(Integer id) {
+        return fileRepository.findByFilmId(id);
+    }
 }

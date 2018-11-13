@@ -85,6 +85,14 @@ public class FilmAdminController {
         return resultMap;
     }
 
+    @RequestMapping("/modifyFilmById")
+    public ModelAndView modifyFilmById(@RequestParam(value = "id")Integer id)throws Exception{
+        Film film = filmService.findByFilmId(id);
+        ModelAndView mav = new ModelAndView("/film/editFilm");
+        mav.addObject("film",film);
+        return mav;
+    }
+
     @RequestMapping("/list/{id}")
     public ModelAndView search(@PathVariable(value = "id",required = false)Integer id)throws Exception{
         ModelAndView mav = new ModelAndView();

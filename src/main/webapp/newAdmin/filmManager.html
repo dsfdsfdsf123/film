@@ -27,11 +27,12 @@
 </script>
 
 <script type="text/javascript">
-    layui.use(['layer','table','form','upload'],function () {
+    layui.use(['layer','table','form','upload','element'],function () {
         var layer = layui.layer;
         var table = layui.table;
         var form = layui.layer;
         var upload = layui.layer;
+        var element = layui.element;
         function randomNumber() {
             return Math.ceil(Math.random()*6);
         }
@@ -68,7 +69,21 @@
             if(layEvent === 'del'){
                 layer.msg("删除操作");
             }else if(layEvent === 'edit'){
-                layer.msg("编辑操作");
+                // 调用父类的这种想法失败了 还没失败，再尝试一下
+                var a = $("#testParentDom", parent.document).click();
+                var filter = a.attr("lay-filter");
+                parent.addEditFilm(data.id);
+
+                // var index = layer.open({
+                //     type:2,
+                //     title:"修改电影信息",
+                //     shadeClose: true,//是否点击遮罩关闭
+                //     shade: false,//遮罩
+                //     maxmin: true, //开启最大化最小化按钮
+                //     maxmin:true,
+                //     content:'/admin/film/modifyFilmById?id='+data.id
+                // });
+                // layer.full(index);
             }
         });
 

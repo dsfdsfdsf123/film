@@ -60,4 +60,6 @@ public interface FilmService {
 
     public List<Film> randomList(Integer n);
 
+    Film findByFilmId(Integer id);
+
 }
