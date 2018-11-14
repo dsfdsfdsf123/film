@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>电影动态信息管理</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <script src="/static/layui/layui.js"></script>
+    <script src="/static/js/jquery.js"></script>
+    <link rel="stylesheet" href="../static/css/index.css">
+</head>
+<body>
+<table class="layui-hide" id="test" lay-filter="table"></table>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="filmTpl">
+    <p style="color: #009E94">{{d.film.name}}</p>
+</script>
+<script type="text/html" id="webSiteTpl">
+    <a href="{{d.webSite.url}}" target="_blank">{{d.webSite.url}}</a>
+</script>
+<form class="layui-form" id="webSiteInfoForm" style="margin-right: 20px;margin-top: 20px">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">电影名称</label>
+        <div class="layui-input-block">
+            <select id="filmNameSelect" name="filmName" lay-filter="dymc">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">电影网址</label>
+        <div class="layui-input-block">
+            <select id="webSiteUrlSelect" name="webSiteUrl" lay-filter="dywz">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">动态信息</label>
+        <div class="layui-input-block">
+            <input type="text" name="info" id="info" required  lay-verify="required" readonly placeholder="请输入动态信息" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">具体网址</label>
+        <div class="layui-input-block">
+            <input type="text" name="url" id="url" required  lay-verify="required" readonly placeholder="请输入具体网址" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="addLink">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $("form").hide();
+    layui.use(['table','layer','form'],function () {
+        var table = layui.table;
+        var layer = layui.layer;
+        var form = layui.form;
+        table.render({
+            elem:'#test',
+            url:'/admin/webSiteInfo/webSiteInfoList',
+            cols:[[
+                {type:'checkbox'},
+                {field:'id',title:'编号'},
+                {field:'filmName',title:'电影名称',templet:'#filmTpl'},
+                {field:'webSiteName',title:'电影网址',templet:'#webSiteTpl'},
+                {field:'info',title:'动态信息'},
+                {field:'url',title:'具体网址 '},
+                {field:'publishDate',title:'发布日期 '},
+                {title: '操作', width:180, align:'center', toolbar: '#barDemo'}
+            ]],
+            page:true,//开启分页
+            id:'testReload',
+            limits:[5,10,15,20],
+            limit:10
+        });
+        table.on('tool(table)',function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            if (layEvent == 'del'){
+                var id = data.id;
+                layer.confirm("您确定删除这行数据吗？",function (index) {
+                    $.ajax({
+                        async:false,
+                        cache:false,
+                        url:'/admin/webSiteInfo/deleteById',
+                        type:'post',
+                        dataType:"json",
+                        data: {id:id},
+                        success:function (result) {
+                            if(result.success){
+                                obj.del();
+                                layer.close(index);
+                                layer.msg("系统提示，删除成功", { icon: 6 });
+                            }else{
+                                layer.msg("系统提示，删除失败，请联系管理员", { icon: 5});
+                            }
+                        },
+                        error:function (XMLHttpRequest, textStatus) {
+                            layer.alert("状态码: "+XMLHttpRequest.status +" 错误信息: "+ textStatus);
+                        }
+                    });
+                });
+            } else if(layEvent == 'edit'){
+                index = layer.open({
+                    type:1,
+                    title:'编辑动态信息',
+                    shadeClose:true,
+                    shade: 0,
+                    maxmin: true, //开启最大化最小化按钮
+                    content: $('#webSiteInfoForm'),
+                    end:function () {
+                        $("#prependId").remove();
+                    }
+                });
+                $("form").prepend(
+                    "<div id='prependId'>\n"+
+                    "<div class=\"layui-form-item \">\n" +
+                    "            <label class=\"layui-form-label\">编号</label>\n" +
+                    "            <div class=\"layui-input-block\">\n" +
+                    "                <input type=\"text\" name=\"id\" id=\"id\" required  lay-verify=\"required\" placeholder=\"请输入id\" autocomplete=\"off\" class=\"layui-input\" readonly>\n" +
+                    "            </div>\n" +
+                    "        </div>\n" +
+                    "</div>"
+                );
+                $("#id").val(data.id);
+                $("#info").val(data.info);
+                $("#url").val(data.url);
+                console.log(data.film.id);
+                $("#filmNameSelect").prepend("<option value="+data.film.id+">"+data.film.name+"</option>");
+                $("#webSiteUrlSelect").prepend("<option value="+data.webSite.id+">"+data.webSite.url+"</option>");
+                layer.full(index);
+            }
+        });
+    });
+</script>
+</body>
+</html>
