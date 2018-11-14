@@ -35,7 +35,7 @@ public class IndexController {
 
     @RequestMapping("/admin")
     public String toAdmin(){
-        return "/admin/main";
+        return "/admin/main1";
     }
 
     @RequestMapping("aboutMe")

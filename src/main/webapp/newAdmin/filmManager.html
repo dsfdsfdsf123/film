@@ -8,6 +8,18 @@
     <script src="/static/js/jquery.js"></script>
 </head>
 <body>
+<blockquote class="layui-elem-quote">
+    <div class="demoTable">
+        搜索电影名称：
+        <div class="layui-inline">
+            <input class="layui-input" name="name" id="demoReload" autocomplete="off">
+        </div>
+        <button class="layui-btn layui-bg-blue" data-type="reload" id="search">搜索</button>
+        <div class="layui-btn-group demoTableSon">
+            <button class="layui-btn layui-btn-danger" data-type="deleteByIds" id="deleteByIds">删除</button>
+        </div>
+    </div>
+</blockquote>
 <table class="layui-hide" id="test" lay-filter="table"></table>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
@@ -16,7 +28,7 @@
 <script type="text/html" id="imageTpl">
     <div class="layer-photos-demo" onclick="imageClick()" style="cursor:pointer;">
         <img  layer-pid="" layer-src="/static/fileImages/{{d.imageName}}" src="/static/fileImages/{{d.imageName}}" alt="图片名">
-    </div>';
+    </div>;
 </script>
 <script type="text/html" id="hotTpl">
     {{# if(d.hot == 1){  }}
@@ -67,27 +79,96 @@
             var data = obj.data;
             var layEvent = obj.event;
             if(layEvent === 'del'){
-                layer.msg("删除操作");
+                var id = data.id;
+                layer.confirm("您真的确定要删除这行数据吗？",function (index) {
+                    $.ajax({
+                        async:false,
+                        cache:false,
+                        url:'/admin/film/deleteById',
+                        type:'post',
+                        dataType:"json",
+                        data: {id:id},
+                        success:function (result) {
+                            if(result.success){
+                                obj.del();
+                                layer.close(index);
+                                layer.msg("系统提示，删除成功", { icon: 6 });
+                            }else{
+                                layer.msg("系统提示，删除失败，请联系管理员", { icon: 5});
+                            }
+                        },
+                        error:function (XMLHttpRequest, textStatus) {
+                            layer.alert("状态码: "+XMLHttpRequest.status +" 错误信息: "+ textStatus);
+                        }
+                    });
+                });
             }else if(layEvent === 'edit'){
                 // 调用父类的这种想法失败了 还没失败，再尝试一下
                 var a = $("#testParentDom", parent.document).click();
                 var filter = a.attr("lay-filter");
                 parent.addEditFilm(data.id);
-
-                // var index = layer.open({
-                //     type:2,
-                //     title:"修改电影信息",
-                //     shadeClose: true,//是否点击遮罩关闭
-                //     shade: false,//遮罩
-                //     maxmin: true, //开启最大化最小化按钮
-                //     maxmin:true,
-                //     content:'/admin/film/modifyFilmById?id='+data.id
-                // });
-                // layer.full(index);
             }
         });
 
-    })
+        var active = {
+            reload:function () {
+                var demoRelaod = $('#demoReload').val();
+                console.log(demoRelaod);
+                //执行重载
+                table.reload('testReload',{
+                    page:{
+                        curr : 1
+                    },
+                    where:{
+                        name:demoRelaod
+                    }
+                });
+            },
+            deleteByIds : function () {
+                var checkStatus =  table.checkStatus('testReload'),
+                    data = checkStatus.data;
+                var strIds = [];
+                for(var i=0;i<data.length;i++){
+                    strIds.push(data[i].id);
+                }
+                var ids = strIds.join(",");
+                console.log(ids);
+                layer.confirm("您确定要删除这"+data.length+"条数据吗？",function (index) {
+                    $.ajax({
+                        async:false,
+                        cache:false,
+                        url:'/admin/film/delete',
+                        type:'POST',
+                        dataType:"json",
+                        data: {ids:ids},
+                        success:function (result) {
+                            if(result.success){
+                                layer.close(index);
+                                table.reload('testReload');
+                                parent.layer.msg("系统提示，操作成功", { icon: 6 });
+                            }else{
+                                parent.layer.msg("系统提示，添加失败，请联系管理员", { icon: 5});
+                            }
+                        },
+                        error:function (XMLHttpRequest, textStatus) {
+                            layer.alert("状态码: "+XMLHttpRequest.status +" 错误信息: "+ textStatus);
+                        }
+                    });
+                });
+            }
+        };
+
+        $('#search').on('click',function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        $('#deleteByIds').on('click',function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    });
 </script>
 </body>
 </html>

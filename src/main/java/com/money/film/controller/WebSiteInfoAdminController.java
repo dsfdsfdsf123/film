@@ -48,6 +48,18 @@ public class WebSiteInfoAdminController {
         return resultMap;
     }
 
+    @RequestMapping("/webSiteInfoList")
+    public Map<String,Object> webSiteInfoList(WebSiteInfo webSiteInfo, @RequestParam(value = "page")Integer page, @RequestParam(value = "limit")Integer limit)throws Exception{
+        Map<String,Object> map = new HashMap<>();
+        List<WebSiteInfo> webSiteInfoList = webSiteInfoService.list(webSiteInfo,page-1,limit);
+        Long count = webSiteInfoService.getCount(webSiteInfo);
+        map.put("data",webSiteInfoList);
+        map.put("count",count);
+        map.put("code",0);
+        map.put("msg","success");
+        return map;
+    }
+
     @RequestMapping("/save")
     public Map<String,Object> save(WebSiteInfo webSiteInfo)throws Exception{
         webSiteInfo.setPublishDate(new Date());
@@ -73,6 +85,14 @@ public class WebSiteInfoAdminController {
             resultMap.put("success",false);
             return resultMap;
         }
+    }
+
+    @RequestMapping("/deleteById")
+    public Map<String,Object> deleteById(@RequestParam(value = "id")Integer id){
+        Map<String,Object> map = new HashMap<>();
+        webSiteInfoService.delete(id);
+        map.put("success",true);
+        return map;
     }
 
 

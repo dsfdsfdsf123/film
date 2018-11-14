@@ -110,8 +110,8 @@
                         data: {id:id},
                         success:function (result) {
                             if(result.success){
+                                obj.del();
                                 layer.close(index);
-                                table.reload('testReload');
                                 layer.msg("系统提示，删除成功", { icon: 6 });
                             }else{
                                 layer.msg("系统提示，删除失败，请联系管理员", { icon: 5});
@@ -126,9 +126,9 @@
                 console.log(data);
                 index = layer.open({
                     type:1,
-                    title: '添加链接',
-                    shadeClose: true,
-                    shade: false,
+                    title: '编辑链接',
+                    shadeClose: true,//如果你的shade是存在的，那么你可以设定shadeClose来控制点击弹层外区域关闭。
+                    shade: 0,
                     maxmin: true, //开启最大化最小化按钮
                     area: ['400px', '350px'],
                     content: $('#linkForm'),

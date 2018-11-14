@@ -218,4 +218,12 @@ public class FilmAdminController {
             return filmService.list(film,0,30);
         }
     }
+
+    @RequestMapping("/deleteById")
+    public Map<String,Object> deleteById(@RequestParam(value = "id")Integer id){
+        filmService.delete(id);
+        Map<String,Object> map = new HashMap<>();
+        map.put("success",true);
+        return map;
+    }
 }
