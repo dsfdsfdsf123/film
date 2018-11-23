@@ -32,7 +32,8 @@
         drag: !0,
         size: 0,
         number: 0,
-        multiple: !1
+        multiple: !1,
+        xhr:function(){}
     }, p.prototype.render = function (e) {
         var t = this, e = t.config;
         e.elem = i(e.elem), e.bindAction = i(e.bindAction), t.file(), t.events()
@@ -84,6 +85,10 @@
                     contentType: !1,
                     processData: !1,
                     dataType: "json",
+                    xhr:l.xhr(function(e){//此处为新添加功能
+                        var percent=Math.floor((e.loaded / e.total)*100);//计算百分比
+                        l.progress(percent);//回调将数值返回
+                    }),
                     headers: l.headers || {},
                     success: function (i) {
                         t++, d(e, i), u()
