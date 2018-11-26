@@ -35,7 +35,7 @@
                 <button type="button" class="layui-btn layui-btn-warm" id="uploadBtn">开始上传</button>
                 <div  id="uploadLoadingDiv">
                     <div class="layui-progress" lay-showpercent="true" lay-filter="demo" >
-                        <div class="layui-progress-bar layui-bg-green" lay-percent="0%"></div>
+                        <div class="layui-progress-bar layui-bg-blue" lay-percent="0%"></div>
                     </div>
                 </div>
             </div>
@@ -92,6 +92,10 @@
                     element.progress('demo','0%');
                     layer.msg('上传失败')
                 }
+            });
+
+            $("#chooseImage").on("click",function () {
+                element.progress('demo','0%');
             });
 
             //监听提交
