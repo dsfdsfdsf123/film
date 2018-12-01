@@ -56,6 +56,7 @@ body{
 }
 
 .data_list .datas .imageUL .imageLi{
+    width: 140px;
     height: 250px;
 }
 
