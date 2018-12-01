@@ -30,7 +30,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 withUser("root").
                 password(new BCryptPasswordEncoder().encode("123456")).
                 roles("ADMIN");
-
     }
 
     /**

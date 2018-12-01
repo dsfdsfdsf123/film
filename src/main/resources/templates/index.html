@@ -40,7 +40,7 @@
                         </div>
                         <div class="datas">
                             <ul>
-                                <li th:each="newestInfo:${application.newWebSiteInfoList}"><span><a target="_blank" th:href="'/film/'+${newestInfo.film.id}" th:title="${newestInfo.film.name+' -> '+newestInfo.info}" th:text="${newestInfo.film.name+' -> '+newestInfo.info}"></a></span></li>
+                                <li th:each="newestInfo:${newWebSiteInfoList}"><span><a target="_blank" th:href="'/film/'+${newestInfo.film.id}" th:title="${newestInfo.film.name+' -> '+newestInfo.info}" th:text="${newestInfo.film.name+' -> '+newestInfo.info}"></a></span></li>
                             </ul>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                         </div>
                         <div class="datas">
                             <ul>
-                                <li th:each="newestHotFilm:${application.newHotFilmList}"><span><a target="_blank" th:href="'/film/'+${newestHotFilm.id}" th:title="${newestHotFilm.name}" th:text="${newestHotFilm.name}"></a></span></li>
+                                <li th:each="newestHotFilm:${newHotFilmList}"><span><a target="_blank" th:href="'/film/'+${newestHotFilm.id}" th:title="${newestHotFilm.name}" th:text="${newestHotFilm.name}"></a></span></li>
                             </ul>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                         </div>
                         <div class="datas">
                             <ul>
-                                <li th:each="newestWebSite:${application.newWebSiteList}"><span><a target="_blank" th:href="${newestWebSite.url}" th:title="${newestWebSite.name}" th:text="${newestWebSite.name}"></a></span></li>
+                                <li th:each="newestWebSite:${newWebSiteList}"><span><a target="_blank" th:href="${newestWebSite.url}" th:title="${newestWebSite.name}" th:text="${newestWebSite.name}"></a></span></li>
                             </ul>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                         </div>
                         <div class="datas">
                             <ul>
-                                <li th:each="newestFilm:${application.newFilmList}"><span><a target="_blank" th:href="'/film/'+${newestFilm.id}" th:title="${newestFilm.name}" th:text="${newestFilm.name}"></a></span></li>
+                                <li th:each="newestFilm:${newFilmList}"><span><a target="_blank" th:href="'/film/'+${newestFilm.id}" th:title="${newestFilm.name}" th:text="${newestFilm.name}"></a></span></li>
                             </ul>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                         </div>
                         <div class="datas">
                             <ul>
-                                <li th:each="link:${application.linkList}"><span><a target="_blank" th:href="${link.url}" th:title="${link.linkName}" th:text="${link.linkName}"></a></span></li>
+                                <li th:each="link:${linkList}"><span><a target="_blank" th:href="${link.url}" th:title="${link.linkName}" th:text="${link.linkName}"></a></span></li>
                             </ul>
                         </div>
                     </div>
