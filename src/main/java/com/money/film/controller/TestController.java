@@ -1,6 +1,8 @@
 package com.money.film.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.money.film.entity.WebSite;
 import com.money.film.repository.WebSiteRepository;
 import com.money.film.util.RedisOperator;
@@ -11,7 +13,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author liugang
@@ -28,19 +32,19 @@ public class TestController {
 
     @RequestMapping("/set")
     public String set(){
-        redisOperator.set("name","杨武");
-        redisOperator.incr("age",22);
-        WebSite webSite = new WebSite();
-        webSite.setId(5);
         List<WebSite> list = webSiteRepository.findAll();
-        System.out.println(list);
         redisOperator.set("json:list", JSON.toJSONString(list));
         return "success";
     }
 
     @RequestMapping("/get")
-    public String get(){
-        return redisOperator.get("json:list");
+    public Map<String,Object> get(){
+        Map<String,Object> map = new HashMap<>();
+        String webSiteListStr = redisOperator.get("json:list");;
+        JSONArray list = JSONObject.parseArray(webSiteListStr);
+        List<WebSite> webSiteList = (List<WebSite>) JSON.toJSON(list);
+        map.put("webSiteList",webSiteList);
+        return map;
     }
 
 }
