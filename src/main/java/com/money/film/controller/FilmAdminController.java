@@ -2,9 +2,11 @@ package com.money.film.controller;
 
 import com.money.film.Service.FilmService;
 import com.money.film.Service.WebSiteInfoService;
+import com.money.film.common.constants.Constants;
 import com.money.film.entity.Film;
 import com.money.film.run.StartupRunner;
 import com.money.film.util.DateUtil;
+import com.money.film.util.QiniuFileUploadUtil;
 import com.money.film.util.StringUtil;
 import org.apache.commons.io.FileUtils;
 
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -114,11 +117,18 @@ public class FilmAdminController {
         return map;
     }
 
+    /**
+     * 上传图片到七牛云
+     * @param file
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/uploadImageToYun",method = RequestMethod.POST)
-    public Map<String,String> uploadImageToYun(@RequestParam(required = false) MultipartFile file){
+    public String uploadImageToYun(@RequestParam(required = false) MultipartFile file) throws IOException {
         Map<String,String> map = new HashMap<>();
         //获取film
-        return null;
+        String imgUrlName = QiniuFileUploadUtil.uploadHeadImg(file);
+        return Constants.QINIU_HEAD_IMG_BUCKEY_URL+"/"+Constants.QINIU_HEAD_IMG_BUCKEY_NAME+"/"+imgUrlName;
     }
 
     /**
