@@ -152,6 +152,24 @@ public class FilmController {
         mav.addObject("mainPage","film/view");
         mav.addObject("pageCode",this.getUpDownPageCode(filmService.getLast(id),filmService.getNext(id)));
         mav.addObject("mainPageKey","#f");
+        JSONArray list1 = JSONObject.parseArray(redisOperator.get("newWebSiteInfoList"));
+        List<WebSiteInfo> newWebSiteInfoList = (List<WebSiteInfo>) JSON.toJSON(list1);
+        JSONArray list2 = JSONObject.parseArray(redisOperator.get("newHotFilmList"));
+        List<Film> newHotFilmList = (List<Film>) JSON.toJSON(list2);
+        JSONArray list3 = JSONObject.parseArray(redisOperator.get("newIndexHotFilmList"));
+        List<Film> newIndexHotFilmList = (List<Film>) JSON.toJSON(list3);
+        JSONArray list4 = JSONObject.parseArray(redisOperator.get("newWebSiteList"));
+        List<WebSite> newWebSiteList = (List<WebSite>) JSON.toJSON(list4);
+        JSONArray list5 = JSONObject.parseArray(redisOperator.get("newFilmList"));
+        List<Film> newFilmList = (List<Film>) JSON.toJSON(list5);
+        JSONArray list6 = JSONObject.parseArray(redisOperator.get("linkList"));
+        List<Link> linkList = (List<Link>) JSON.toJSON(list6);
+        mav.addObject("newWebSiteInfoList",newWebSiteInfoList);
+        mav.addObject("newHotFilmList",newHotFilmList);
+        mav.addObject("newIndexHotFilmList",newIndexHotFilmList);
+        mav.addObject("newWebSiteList",newWebSiteList);
+        mav.addObject("newFilmList",newFilmList);
+        mav.addObject("linkList",linkList);
         mav.setViewName("index");
         return mav;
     }
